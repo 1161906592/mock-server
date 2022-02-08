@@ -38,18 +38,20 @@ function buildMockModule() {
 }
 
 let childProcess: ChildProcess;
+let pending: Promise<void>;
 
-async function startServer() {
-  await buildMockModule();
-  childProcess = spawn("node", [`${__dirname}/server.js`], {
-    stdio: "inherit",
+function startServer() {
+  pending = buildMockModule().then(() => {
+    childProcess = spawn("node", [`${__dirname}/server.js`], {
+      stdio: "inherit",
+    });
   });
 }
 
 startServer();
 watcher.on("all", () => {
-  if (childProcess && !childProcess.killed) {
+  pending.then(() => {
     childProcess.kill();
-  }
-  startServer();
+    startServer();
+  });
 });
