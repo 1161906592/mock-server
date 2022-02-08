@@ -1,4 +1,5 @@
 import { ChildProcess, spawn } from "child_process";
+import fs from "fs";
 import chokidar from "chokidar";
 import { transformFileSync } from "@swc/core";
 import glob from "glob";
@@ -14,7 +15,7 @@ function buildMockModule() {
   return new Promise<void>((resolve) => {
     glob("mock/*.ts", function (_, files) {
       files.forEach((file) => {
-        transformFileSync(`${cwd}/${file}`, {
+        const { code } = transformFileSync(`${cwd}/${file}`, {
           jsc: {
             target: "es5",
             parser: {
@@ -24,8 +25,12 @@ function buildMockModule() {
           module: {
             type: "commonjs",
           },
-          outputPath: `${cwd}.mock/${file.match(/mock\/(.*).ts/)?.[1]}.js`,
         });
+        const outputDir = `${cwd}/.mock`;
+        if (!fs.existsSync(outputDir)) {
+          fs.mkdirSync(outputDir);
+        }
+        fs.writeFileSync(`${outputDir}/${file.match(/mock\/(.*).ts/)?.[1]}.js`, code, "utf8");
       });
       resolve();
     });
