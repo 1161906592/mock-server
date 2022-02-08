@@ -48,7 +48,7 @@ async function startServer() {
 
 startServer();
 watcher.on("all", () => {
-  if (!childProcess?.killed) {
+  if (childProcess && !childProcess.killed) {
     childProcess.kill();
   }
   startServer();
