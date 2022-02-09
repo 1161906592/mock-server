@@ -32,10 +32,10 @@ app.use(koaBody());
 app.use(cors());
 
 app.use(router.routes());
-glob(".mock/*.js", function (_, files) {
+glob(".mock/**/*.js", function (_, files) {
   files.forEach(async (file) => {
     const modules = (await import(`${process.cwd()}/${file}`)).default as MockModule[];
-    modules.forEach((module) => {
+    modules.forEach?.((module) => {
       const { url, method, data, timeout } = module;
       router[method](url, async (ctx: Context) => {
         const {

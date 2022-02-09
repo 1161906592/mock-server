@@ -29,6 +29,7 @@
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
+    "@types/fs-extra": "^9.0.13",
     "@types/glob": "^7.2.0",
     "@types/koa": "^2.13.4",
     "@types/koa-router": "^7.4.4",
@@ -48,11 +49,13 @@
   "dependencies": {
     "@swc/core": "^1.2.137",
     "chokidar": "^3.5.3",
+    "fs-extra": "^10.0.0",
     "glob": "^7.2.0",
     "koa": "^2.13.4",
     "koa-body": "^4.2.0",
     "koa-router": "^10.1.1",
-    "koa2-cors": "^2.0.6"
+    "koa2-cors": "^2.0.6",
+    "minimist": "^1.2.5"
   },
   "lint-staged": {
     "*.{ts}": [
